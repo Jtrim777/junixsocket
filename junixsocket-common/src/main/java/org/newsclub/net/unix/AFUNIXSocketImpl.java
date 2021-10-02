@@ -48,6 +48,7 @@ class AFUNIXSocketImpl extends SocketImplShim {
 
   private final AtomicBoolean bound = new AtomicBoolean(false);
   private Boolean createType = null;
+  private boolean tcpUseSeqPacket = false;
   private final AtomicBoolean connected = new AtomicBoolean(false);
 
   private volatile boolean closedInputStream = false;
@@ -180,6 +181,10 @@ class AFUNIXSocketImpl extends SocketImplShim {
 
   private boolean isClosed() {
     return core.isClosed();
+  }
+
+  protected void useSeqpacket() {
+    this.tcpUseSeqPacket = true;
   }
 
   @Override
@@ -339,8 +344,14 @@ class AFUNIXSocketImpl extends SocketImplShim {
       return;
     }
     createType = stream;
-    NativeUnixSocket.createSocket(fd, stream ? NativeUnixSocket.SOCK_STREAM
-        : NativeUnixSocket.SOCK_DGRAM);
+
+    int kind = stream ? NativeUnixSocket.SOCK_STREAM
+        : NativeUnixSocket.SOCK_DGRAM;
+    if (stream && tcpUseSeqPacket) {
+      kind = NativeUnixSocket.SOCK_SEQPACKET;
+    }
+
+    NativeUnixSocket.createSocket(fd, kind);
   }
 
   @Override

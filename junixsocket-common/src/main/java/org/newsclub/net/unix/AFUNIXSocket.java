@@ -66,6 +66,20 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
     return newInstance0(null, null);
   }
 
+  /**
+   * Creates a new, unbound {@link AFUNIXSocket} using the SEQPACKET TCP mode
+   *
+   * @return A new, unbound socket.
+   * @throws IOException if the operation fails.
+   */
+  public static AFUNIXSocket newSeqpacketInstance() throws IOException {
+    AFUNIXSocket ni = newInstance0(null, null);
+
+    ni.getAFImpl().useSeqpacket();
+
+    return ni;
+  }
+
   static AFUNIXSocket newInstance(FileDescriptor fdObj, int localPort, int remotePort)
       throws IOException {
     if (!fdObj.valid()) {

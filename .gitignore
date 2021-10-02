@@ -15,3 +15,5 @@ pom.xml.releaseBackup
 interpolated-pom.xml
 .eclipse-pmd
 *.swp
+.idea/
+*.iml

@@ -2,6 +2,8 @@
 
 junixsocket is a Java/JNI library that allows the use of [Unix Domain Sockets](https://en.wikipedia.org/wiki/Unix_domain_socket) (AF_UNIX sockets) from Java.
 
+**This fork by @Jtrim777 adds SEQPACKET mode support to the library**
+
 ## Why it's cool
 
 * *junixsocket* is the most complete implementation of Unix Domain Sockets for the Java ecosystem.

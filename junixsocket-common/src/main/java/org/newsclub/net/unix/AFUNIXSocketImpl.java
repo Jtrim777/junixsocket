@@ -34,7 +34,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * The Java-part of the {@link AFUNIXSocket} implementation.
- * 
+ *
  * @author Christian Kohlschütter
  */
 @SuppressWarnings({"PMD.CyclomaticComplexity"})
@@ -48,7 +48,6 @@ class AFUNIXSocketImpl extends SocketImplShim {
 
   private final AtomicBoolean bound = new AtomicBoolean(false);
   private Boolean createType = null;
-  private boolean tcpUseSeqPacket = false;
   private final AtomicBoolean connected = new AtomicBoolean(false);
 
   private volatile boolean closedInputStream = false;
@@ -60,6 +59,8 @@ class AFUNIXSocketImpl extends SocketImplShim {
   private boolean reuseAddr = true;
 
   private final AtomicInteger socketTimeout = new AtomicInteger(0);
+
+  private int kind = -1;
 
   /**
    * When the {@link AFUNIXSocketImpl} becomes unreachable (but not yet closed), we must ensure that
@@ -135,6 +136,10 @@ class AFUNIXSocketImpl extends SocketImplShim {
     this.fd = core.fd;
   }
 
+  void setKind(int nk) {
+    this.kind = nk;
+  }
+
   protected AFUNIXInputStream newInputStream() {
     return new AFUNIXInputStream();
   }
@@ -181,10 +186,6 @@ class AFUNIXSocketImpl extends SocketImplShim {
 
   private boolean isClosed() {
     return core.isClosed();
-  }
-
-  protected void useSeqpacket() {
-    this.tcpUseSeqPacket = true;
   }
 
   @Override
@@ -345,13 +346,9 @@ class AFUNIXSocketImpl extends SocketImplShim {
     }
     createType = stream;
 
-    int kind = stream ? NativeUnixSocket.SOCK_STREAM
-        : NativeUnixSocket.SOCK_DGRAM;
-    if (stream && tcpUseSeqPacket) {
-      kind = NativeUnixSocket.SOCK_SEQPACKET;
-    }
+    int ckind = (kind == -1) ? (stream ? NativeUnixSocket.SOCK_STREAM : NativeUnixSocket.SOCK_DGRAM) : NativeUnixSocket.SOCK_SEQPACKET;
 
-    NativeUnixSocket.createSocket(fd, kind);
+    NativeUnixSocket.createSocket(fd, ckind);
   }
 
   @Override
@@ -682,7 +679,7 @@ class AFUNIXSocketImpl extends SocketImplShim {
 
   /**
    * Changes the behavior to be somewhat lenient with respect to the specification.
-   * 
+   *
    * In particular, we ignore calls to {@link Socket#getTcpNoDelay()} and
    * {@link Socket#setTcpNoDelay(boolean)}.
    */

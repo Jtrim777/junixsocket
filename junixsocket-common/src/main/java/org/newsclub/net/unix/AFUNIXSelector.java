@@ -116,6 +116,8 @@ final class AFUNIXSelector extends AbstractSelector {
     int num;
     begin();
     try {
+      String pfdd = pollFd == null ? "NULL" : pollFd.toString();
+      System.out.println("Starting poll on FD "+pfdd+" with timeout "+timeout);
       num = NativeUnixSocket.poll(pollFd, timeout);
     } finally {
       end();

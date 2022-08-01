@@ -25,16 +25,19 @@ import java.net.SocketAddress;
 import java.net.SocketException;
 import java.util.concurrent.atomic.AtomicBoolean;
 
-import com.kohlschutter.annotations.compiletime.SuppressFBWarnings;
 
 /**
  * Implementation of an AF_UNIX domain socket.
- * 
+ *
  * @author Christian Kohlschütter
  */
 public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUNIXSocketExtensions {
   @SuppressWarnings("PMD.MutableStaticState")
   static String loadedLibrary; // set by NativeLibraryLoader
+
+  public static int KIND_STREAM = 1;
+  public static int KIND_DGRAM = 2;
+  public static int KIND_SEQPACKET = 5;
 
   private static Integer capabilities = null;
 
@@ -53,12 +56,12 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Creates a new, unbound {@link AFUNIXSocket}.
-   * 
+   *
    * This "default" implementation is a bit "lenient" with respect to the specification.
-   * 
+   *
    * In particular, we ignore calls to {@link Socket#getTcpNoDelay()} and
    * {@link Socket#setTcpNoDelay(boolean)}.
-   * 
+   *
    * @return A new, unbound socket.
    * @throws IOException if the operation fails.
    */
@@ -67,17 +70,22 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
   }
 
   /**
-   * Creates a new, unbound {@link AFUNIXSocket} using the SEQPACKET TCP mode
+   * Creates a new, unbound {@link AFUNIXSocket} with a specific kind.
    *
+   * This "default" implementation is a bit "lenient" with respect to the specification.
+   *
+   * In particular, we ignore calls to {@link Socket#getTcpNoDelay()} and
+   * {@link Socket#setTcpNoDelay(boolean)}.
+   *
+   * @param kind The ID of the socket kind to pass to the C impl
    * @return A new, unbound socket.
    * @throws IOException if the operation fails.
    */
-  public static AFUNIXSocket newSeqpacketInstance() throws IOException {
-    AFUNIXSocket ni = newInstance0(null, null);
+  public static AFUNIXSocket newInstance(int kind) throws IOException {
+    AFUNIXSocket i = newInstance0(null, null);
+    i.impl.setKind(kind);
 
-    ni.getAFImpl().useSeqpacket();
-
-    return ni;
+    return i;
   }
 
   static AFUNIXSocket newInstance(FileDescriptor fdObj, int localPort, int remotePort)
@@ -125,10 +133,10 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Creates a new, unbound, "strict" {@link AFUNIXSocket}.
-   * 
+   *
    * This call uses an implementation that tries to be closer to the specification than
    * {@link #newInstance()}, at least for some cases.
-   * 
+   *
    * @return A new, unbound socket.
    * @throws IOException if the operation fails.
    */
@@ -141,7 +149,7 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Creates a new {@link AFUNIXSocket} and connects it to the given {@link AFUNIXSocketAddress}.
-   * 
+   *
    * @param addr The address to connect to.
    * @return A new, connected socket.
    * @throws IOException if the operation fails.
@@ -154,7 +162,7 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Not supported, since it's not necessary for client sockets.
-   * 
+   *
    * @see AFUNIXServerSocket
    */
   @Override
@@ -245,10 +253,10 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Returns <code>true</code> iff {@link AFUNIXSocket}s are supported by the current Java VM.
-   * 
+   *
    * To support {@link AFUNIXSocket}s, a custom JNI library must be loaded that is supplied with
    * <em>junixsocket</em>.
-   * 
+   *
    * @return {@code true} iff supported.
    */
   public static boolean isSupported() {
@@ -257,9 +265,9 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Returns the version of the junixsocket library, as a string, for debugging purposes.
-   * 
+   *
    * NOTE: Do not rely on the format of the version identifier, use socket capabilities instead.
-   * 
+   *
    * @return String The version identfier, or {@code null} if it could not be determined.
    * @see #supports(AFUNIXSocketCapability)
    */
@@ -274,9 +282,9 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
   /**
    * Returns an identifier of the loaded native library, or {@code null} if the library hasn't been
    * loaded yet.
-   * 
+   *
    * The identifier is useful mainly for debugging purposes.
-   * 
+   *
    * @return The identifier of the loaded junixsocket-native library, or {@code null}.
    */
   public static String getLoadedLibrary() {
@@ -348,7 +356,7 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
   /**
    * Checks if the current environment (system platform, native library, etc.) supports a given
    * junixsocket capability.
-   * 
+   *
    * @param capability The capability.
    * @return true if supported.
    */
@@ -369,7 +377,7 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Registers a {@link Closeable} that should be closed when this socket is closed.
-   * 
+   *
    * @param closeable The closeable.
    */
   public void addCloseable(Closeable closeable) {
@@ -378,7 +386,7 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Unregisters a previously registered {@link Closeable}.
-   * 
+   *
    * @param closeable The closeable.
    */
   public void removeCloseable(Closeable closeable) {
@@ -387,9 +395,9 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
 
   /**
    * Very basic self-test function.
-   * 
+   *
    * Prints "supported" and "capabilities" status to System.out.
-   * 
+   *
    * @param args ignored.
    */
   public static void main(String[] args) {
@@ -416,7 +424,7 @@ public final class AFUNIXSocket extends Socket implements AFUNIXSomeSocket, AFUN
     return impl;
   }
 
-  @SuppressFBWarnings("EI_EXPOSE_REP")
+  //@SuppressFBWarnings("EI_EXPOSE_REP")
   @Override
   public AFUNIXSocketChannel getChannel() {
     return channel;

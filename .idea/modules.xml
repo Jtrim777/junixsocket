@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-common/junixsocket-common.iml" filepath="$PROJECT_DIR$/junixsocket-common/junixsocket-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-core/junixsocket-core.iml" filepath="$PROJECT_DIR$/junixsocket-core/junixsocket-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-mysql/junixsocket-mysql.iml" filepath="$PROJECT_DIR$/junixsocket-mysql/junixsocket-mysql.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-native/junixsocket-native.iml" filepath="$PROJECT_DIR$/junixsocket-native/junixsocket-native.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-native-common/junixsocket-native-common.iml" filepath="$PROJECT_DIR$/junixsocket-native-common/junixsocket-native-common.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-native-cross/junixsocket-native-cross.iml" filepath="$PROJECT_DIR$/junixsocket-native-cross/junixsocket-native-cross.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-native-custom/junixsocket-native-custom.iml" filepath="$PROJECT_DIR$/junixsocket-native-custom/junixsocket-native-custom.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-parent.iml" filepath="$PROJECT_DIR$/junixsocket-parent.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-rmi/junixsocket-rmi.iml" filepath="$PROJECT_DIR$/junixsocket-rmi/junixsocket-rmi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/junixsocket-server/junixsocket-server.iml" filepath="$PROJECT_DIR$/junixsocket-server/junixsocket-server.iml" />
+    </modules>
+  </component>
+</project>

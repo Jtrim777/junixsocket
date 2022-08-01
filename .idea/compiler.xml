@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="CompilerConfiguration">
+    <annotationProcessing>
+      <profile name="Maven default annotation processors profile" enabled="true">
+        <sourceOutputDir name="target/generated-sources/annotations" />
+        <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
+        <outputRelativeToContentRoot value="true" />
+        <module name="junixsocket-native-cross" />
+        <module name="junixsocket-common" />
+        <module name="junixsocket-native-common" />
+        <module name="junixsocket-mysql" />
+        <module name="junixsocket-rmi" />
+        <module name="junixsocket-native" />
+        <module name="junixsocket-native-custom" />
+        <module name="junixsocket-server" />
+      </profile>
+    </annotationProcessing>
+    <bytecodeTargetLevel>
+      <module name="junixsocket-common" target="11" />
+      <module name="junixsocket-core" target="9" />
+      <module name="junixsocket-mysql" target="11" />
+      <module name="junixsocket-native" target="11" />
+      <module name="junixsocket-native-common" target="11" />
+      <module name="junixsocket-native-cross" target="11" />
+      <module name="junixsocket-native-custom" target="11" />
+      <module name="junixsocket-parent" target="9" />
+      <module name="junixsocket-rmi" target="11" />
+      <module name="junixsocket-server" target="11" />
+    </bytecodeTargetLevel>
+  </component>
+</project>

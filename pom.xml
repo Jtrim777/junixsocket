@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.kohlschutter.junixsocket</groupId>
   <artifactId>junixsocket-parent</artifactId>
-  <version>2.4.0</version>
+  <version>2.4.0-patch</version>
   <packaging>pom</packaging>
   <parent>
     <groupId>com.kohlschutter</groupId>
@@ -18,7 +18,7 @@
   <description>junixsocket is a Java/JNI library that allows the use of Unix Domain Sockets (AF_UNIX sockets) from Java.
 
 In contrast to other implementations, junixsocket extends the Java Sockets API (java.net.Socket, java.net.SocketAddress etc.) and even supports RMI over AF_UNIX. It is also possible to use it in conjunction with Connector/J to connect to a local MySQL server via Unix domain sockets.</description>
-  <url>https://kohlschutter.github.io/junixsocket/</url>
+  <url>https://github.com/Jtrim777/junixsocket</url>
   <organization>
     <name>Kohlschütter Search Intelligence</name>
     <url>https://www.kohlschutter.com/</url>
@@ -27,6 +27,10 @@ In contrast to other implementations, junixsocket extends the Java Sockets API (
     <developer>
       <name>Christian Kohlschütter</name>
       <email>christian@kohlschutter.com</email>
+    </developer>
+    <developer>
+      <name>Jake Trimble</name>
+      <email>jatrimble777@gmail.com</email>
     </developer>
   </developers>
   <licenses>
@@ -37,19 +41,14 @@ In contrast to other implementations, junixsocket extends the Java Sockets API (
     </license>
   </licenses>
   <scm>
-    <url>https://github.com/kohlschutter/junixsocket</url>
-    <connection>scm:git:https://github.com/kohlschutter/junixsocket.git</connection>
-    <developerConnection>scm:git:https://github.com/kohlschutter/junixsocket.git</developerConnection>
+    <url>https://github.com/Jtrim777/junixsocket</url>
   </scm>
   <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <url>https://oss.sonatype.org/content/repositories/snapshots</url>
-    </snapshotRepository>
-    <site>
-      <id>github.com/kohlschutter/junixsocket</id>
-      <url>gitsite:git@github.com/kohlschutter/junixsocket.git</url>
-    </site>
+    <repository>
+      <id>jtrim777-repository</id>
+      <name>Jake's Repository</name>
+      <url>https://maven.jtrim777.dev/releases</url>
+    </repository>
   </distributionManagement>
   <issueManagement>
     <system>GitHub</system>
@@ -80,10 +79,10 @@ In contrast to other implementations, junixsocket extends the Java Sockets API (
     <module>junixsocket-rmi</module>
     <module>junixsocket-mysql</module>
     <module>junixsocket-core</module>
-    <module>junixsocket-demo</module>
-    <module>junixsocket-selftest</module>
-    <module>junixsocket-dist</module>
-    <module>junixsocket-codecoverage</module>
+    <!-- <module>junixsocket-demo</module> -->
+    <!-- <module>junixsocket-selftest</module> -->
+    <!-- <module>junixsocket-dist</module> -->
+    <!-- <module>junixsocket-codecoverage</module> -->
   </modules>
 
   <build>
